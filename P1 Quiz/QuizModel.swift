@@ -7,7 +7,9 @@
 
 import Foundation
 
-
+/*
+ Esta struct mapea el JSON con los quizzes
+ */
 struct QuizItem: Codable {
     let id: Int
     let question: String
@@ -33,13 +35,13 @@ struct QuizItem: Codable {
  Esta clase se encarga de procesar el JSON los quizzes, en este caso son siempre los mismos
  */
 class QuizModel {
-    // Solución al constructor privado, patrón Singleton para crear la primera instancia. El static permite que todo el mundo comparta una única instancia de dicha clase
+    /// Solución al constructor privado, patrón Singleton para crear la primera instancia. El static permite que todo el mundo comparta una única instancia de dicha clase
     private(set) static var shared = QuizModel()
     
-    // Extraidos del JSON, es fijo, si puedera modificarse en cualquier momento se va a querer la interfaz lo vigile, sería necesario un @Published
+    /// Extraidos del JSON, es fijo, si puedera modificarse en cualquier momento se va a querer la interfaz lo vigile, sería necesario un @Published
     private(set) var quizzes = [QuizItem]()
     
-    // El constructor es privado ya que no se quiere que se puedan crear instancias desde otras clases
+    /// El constructor es privado ya que no se quiere que se puedan crear instancias desde otras clases
     private init() {
        load()
     }
