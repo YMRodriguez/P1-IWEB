@@ -10,13 +10,17 @@ import SwiftUI
 struct QuizDetail: View {
     var quiz: QuizItem
     @EnvironmentObject var imageStore: ImageStore
-    
+    @State var showAnswer: Bool = false
+
     var body: some View {
         VStack{
             Text(quiz.question).font(.largeTitle)
-            
-            Text("Answer: " + quiz.answer)
-            
+            Button(action: { showAnswer = !showAnswer }, label: {
+                Text("Mostrar respuesta")
+            })
+            if (showAnswer){
+                Text("Answer: " + quiz.answer)
+            }
             Image(uiImage: imageStore.image(url: quiz.attachment?.url))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
