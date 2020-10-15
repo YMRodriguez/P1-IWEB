@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4626B662253765660002788B /* ScoreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4626B661253765660002788B /* ScoreModel.swift */; };
 		4A5A77842531FB7C007711B1 /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5A77832531FB7C007711B1 /* ImageStore.swift */; };
 		4A5A77872531FB8A007711B1 /* p1_quizzes.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A5A77862531FB8A007711B1 /* p1_quizzes.json */; };
 		4A5A778A2531FB93007711B1 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5A77892531FB93007711B1 /* QuizModel.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4626B661253765660002788B /* ScoreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreModel.swift; sourceTree = "<group>"; };
 		4A5A77832531FB7C007711B1 /* ImageStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
 		4A5A77862531FB8A007711B1 /* p1_quizzes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = p1_quizzes.json; sourceTree = "<group>"; };
 		4A5A77892531FB93007711B1 /* QuizModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				4A5A77892531FB93007711B1 /* QuizModel.swift */,
 				4A5A77862531FB8A007711B1 /* p1_quizzes.json */,
 				4A5A77832531FB7C007711B1 /* ImageStore.swift */,
+				4626B661253765660002788B /* ScoreModel.swift */,
 				4AE9E58B2531F1D50023EED6 /* P1_QuizApp.swift */,
 				4AE9E58D2531F1D50023EED6 /* ContentView.swift */,
 				4AE9E58F2531F1D60023EED6 /* Assets.xcassets */,
@@ -157,6 +160,7 @@
 				4A5A778A2531FB93007711B1 /* QuizModel.swift in Sources */,
 				4AE9E58E2531F1D50023EED6 /* ContentView.swift in Sources */,
 				4AE9E58C2531F1D50023EED6 /* P1_QuizApp.swift in Sources */,
+				4626B662253765660002788B /* ScoreModel.swift in Sources */,
 				4A5A778D253256E3007711B1 /* QuizRow.swift in Sources */,
 				4A5A77842531FB7C007711B1 /* ImageStore.swift in Sources */,
 				4A5A7790253256FE007711B1 /* QuizDetail.swift in Sources */,

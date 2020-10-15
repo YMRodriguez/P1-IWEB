@@ -11,7 +11,7 @@ struct ContentView: View {
     
     /// Variable que instancia el modelo de datos en la View principal
     var model: QuizModel
-    
+    @EnvironmentObject  var scoreModel: ScoreModel    
     var body: some View {
         
         NavigationView {
@@ -20,17 +20,24 @@ struct ContentView: View {
                     
                     /// label: {QuizRow()} esto sería lo equivalente sin sacar la closure fuera, sin corchetes no funcionaria.
                     // MARK: duda
-                    NavigationLink( destination: QuizDetail(quiz: quiz)){ QuizRow(quiz: quiz)}
+                    NavigationLink( destination: QuizDetail(
+                                        quiz: quiz)){
+                        QuizRow(quiz: quiz)}
                 }
             }
             .navigationTitle("P1 Quiz")
+            VStack{
+                Text("Selecciona una de las preguntas")
+                Image("noImage")
+                    .resizable()
+                    .scaledToFit()
+            }
             
-            Text("Selecciona una de las preguntas")
         }
-    }
+    } 
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct ContentView_Previews: PreviewProvider {  
     
     static var previews: some View {
         /// Necesito crear esta variable dentro porque las previews son Static
