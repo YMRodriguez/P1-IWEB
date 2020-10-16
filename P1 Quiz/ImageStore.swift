@@ -13,7 +13,6 @@ class ImageStore: ObservableObject {
     // La clave es un String con la url.
     /// Published para que la interfaz de usuario esté atenta por si en imagesCache cambia algo y se actualice automaticamente
     @Published var imagesCache = [URL:UIImage]()
-    
     let defaultImage = UIImage(named: "default")!
     let fetchingImage = UIImage(named : "downloading")!
     let noImage = UIImage(named: "noImage")!
@@ -46,6 +45,9 @@ class ImageStore: ObservableObject {
                     /// En closure se necesita el self, tras guardar esto en la caché
                     self.imagesCache[url] = img
                 }
+            }
+            else{
+                self.imagesCache[url] = self.noImage
             }
         }
         /// Esta sentencia se va a ejecutar sin que termine el dispatch anterior, es cuando termina que se actualiza el array de imagesCache y sus vistas debido a @Published

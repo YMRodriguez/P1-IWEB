@@ -28,9 +28,6 @@ struct ContentView: View {
             .navigationTitle("P1 Quiz")
             VStack{
                 Text("Selecciona una de las preguntas")
-                Image("noImage")
-                    .resizable()
-                    .scaledToFit()
             }
             
         }
