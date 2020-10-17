@@ -9,8 +9,8 @@ import SwiftUI
 
 struct QuizDetail: View {
     var quiz: QuizItem
+    @ObservedObject var scoreModel: ScoreModel
     
-    //@ObservableObject var scoreModel: ScoreModel
     @EnvironmentObject var imageStore: ImageStore
     
     @State var showAnswer: Bool = false
@@ -19,19 +19,17 @@ struct QuizDetail: View {
     var body: some View {
         VStack{
             Text(quiz.question).font(.largeTitle)
-            
-            TextField("Su respuesta...",
+            Text("Current score: \(scoreModel.alreadyScored.count)")
+            TextField("Your answer...",
                       text: $answer,
                       onCommit: {
-                        if answer.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == quiz.answer.lowercased(){
-                            
-                        }
+                        scoreModel.check(answer: answer, quiz: quiz)
                       })
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .shadow(radius: 10)
              
                 Button(action: { showAnswer = !showAnswer }, label: {
-                    Text("Mostrar solución")
+                    Text("Show solution")
                         .fontWeight(.bold)
                         .font(.title)
                         .padding()
@@ -61,6 +59,7 @@ struct QuizDetail: View {
 
 struct QuizDetail_Previews: PreviewProvider {
     static var previews: some View {
-        QuizDetail(quiz: QuizModel.shared.quizzes[0])
+        
+        QuizDetail(quiz: QuizModel.shared.quizzes[0], scoreModel: ScoreModel())
     }
 }

@@ -11,7 +11,7 @@ struct ContentView: View {
     
     /// Variable que instancia el modelo de datos en la View principal
     var model: QuizModel
-    //@StateObject var score: ScoreModel = ScoreModel()
+    @StateObject var score: ScoreModel = ScoreModel()
     
     var body: some View {
         
@@ -21,7 +21,7 @@ struct ContentView: View {
                     
                     /// label: {QuizRow()} esto sería lo equivalente sin sacar la closure fuera, sin corchetes no funcionaria.
                     // MARK: duda
-                    NavigationLink( destination: QuizDetail(quiz:quiz)){ QuizRow(quiz: quiz)}
+                    NavigationLink( destination: QuizDetail(quiz:quiz, scoreModel: score)){ QuizRow(quiz: quiz)}
                 }
             }
             .navigationTitle("P1 Quiz")
