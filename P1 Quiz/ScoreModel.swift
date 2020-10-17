@@ -9,6 +9,7 @@ import Foundation
 
 class ScoreModel:  ObservableObject {
     
+    @Published var isCorrect: Bool = false
     @Published var alreadyScored: Set<Int> = []
     
     let quizModel = QuizModel.shared
@@ -20,6 +21,11 @@ class ScoreModel:  ObservableObject {
         if formattedAnswer == formattedRightAnswer,
            !alreadyScored.contains(quiz.id) {
             alreadyScored.insert(quiz.id)
+            isCorrect = true
+        }else if formattedAnswer == formattedRightAnswer {
+            isCorrect = true
+        }else{
+            isCorrect = false
         }
     }
 }
