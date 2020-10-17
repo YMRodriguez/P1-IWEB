@@ -61,9 +61,6 @@ class QuizModel {
             // print("Quizzes ==>", str!)
             
             let quizzes = try decoder.decode([QuizItem].self, from: data)
-            
-            // print("Quizzes cargados")
-            
             self.quizzes = quizzes
         } catch {
             print("Algo chungo ha pasado: \(error)")

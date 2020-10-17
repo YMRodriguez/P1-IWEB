@@ -21,7 +21,7 @@ class ImageStore: ObservableObject {
     // Si la imagen pedida esta en la cache, entonces la devuelve.
     // Si la imagen no esta en la cache entonces la descarga, y
     // actualizara la cache cuando la reciba.
-    func image(url: URL?) -> UIImage {
+    func getImage(url: URL?) -> UIImage {
         
         guard let url = url else {
             return defaultImage
@@ -46,6 +46,9 @@ class ImageStore: ObservableObject {
                     /// En closure se necesita el self, tras guardar esto en la caché
                     self.imagesCache[url] = img
                 }
+            } else{
+                /// DUDA: Pide .self 
+                self.imagesCache[url] = self.noImage
             }
         }
         /// Esta sentencia se va a ejecutar sin que termine el dispatch anterior, es cuando termina que se actualiza el array de imagesCache y sus vistas debido a @Published
