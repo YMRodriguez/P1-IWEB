@@ -9,8 +9,8 @@ import SwiftUI
 
 struct QuizDetail: View {
     var quiz: QuizItem
-    @ObservedObject var scoreModel: ScoreModel
     
+    @EnvironmentObject var scoreModel: ScoreModel
     @EnvironmentObject var imageStore: ImageStore
     
     @State var showAnswer: Bool = false
@@ -59,7 +59,6 @@ struct QuizDetail: View {
 
 struct QuizDetail_Previews: PreviewProvider {
     static var previews: some View {
-        
-        QuizDetail(quiz: QuizModel.shared.quizzes[0], scoreModel: ScoreModel())
+        QuizDetail(quiz: QuizModel.shared.quizzes[0])
     }
 }
