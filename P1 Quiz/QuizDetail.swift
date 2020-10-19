@@ -18,49 +18,80 @@ struct QuizDetail: View {
     @State var showAlert: Bool = false
     var body: some View {
         VStack{
-            Text(quiz.question).font(.largeTitle)
-            Text("Current score: \(scoreModel.alreadyScored.count)")
-            TextField("Your answer...",
-                      text: $answer,
-                      onCommit: {
-                        scoreModel.check(answer: answer, quiz: quiz)
-                        showAlert = true
-                      })
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .shadow(radius: 10)
-                .alert(isPresented: $showAlert, content: {
-                    Alert(title: Text("Result"), message: Text(scoreModel.isCorrect ? "Right" : "Wrong"), dismissButton: .default(Text("OK")))
-                })
             Group{
                 if horizontalSizeClass == .regular{
-                    HStack{
-                        Button(action: { showAnswer = !showAnswer }, label: {
-                            Text("Show solution")
-                                .fontWeight(.bold)
-                                .font(.title)
-                                .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
-                                .scaledToFit()
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
-                                .padding()
-                                .shadow(radius: 1)
-                        })
-                        if (showAnswer){
-                            Text("Answer: " + quiz.answer)
+                    VStack{
+                        HStack{
+                            Text(quiz.question).font(.largeTitle)
+                            Spacer()
+                            Text("Author: \(quiz.author?.username ?? "unknown")").italic().font(.custom("tiny", size: 10))
+                            Image(uiImage : imageStore.getImage(url: quiz.author?.photo?.url))
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .clipShape(Circle())
+                            
                         }
-                        
-                        
-                        Image(uiImage: imageStore.getImage(url: quiz.attachment?.url))
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .clipped()
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                            .shadow(radius: 15)
-                            .animation(.easeInOut)
+                        TextField("Your answer...",
+                                  text: $answer,
+                                  onCommit: {
+                                    scoreModel.check(answer: answer, quiz: quiz)
+                                    showAlert = true
+                                  })
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .shadow(radius: 10)
+                            .alert(isPresented: $showAlert, content: {
+                                Alert(title: Text("Result"), message: Text(scoreModel.isCorrect ? "Right" : "Wrong"), dismissButton: .default(Text("OK")))
+                            })
+                        HStack{
+                            Text("Current score: \(scoreModel.alreadyScored.count)")
+                            Button(action: { showAnswer = !showAnswer }, label: {
+                                Text("Show solution")
+                                    .fontWeight(.bold)
+                                    .font(.title)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .scaledToFit()
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding()
+                                    .shadow(radius: 1)
+                            })
+                            if (showAnswer){
+                                Text("Answer: " + quiz.answer)
+                            }
+                            
+                            
+                            Image(uiImage: imageStore.getImage(url: quiz.attachment?.url))
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .clipped()
+                                .clipShape(RoundedRectangle(cornerRadius: 20))
+                                .shadow(radius: 15)
+                                .animation(.easeInOut)
+                        }
                     }
                 }else {
                     VStack{
+                        Text(quiz.question).font(.largeTitle)
+                        HStack{
+                            Text("Author: \(quiz.author?.username ?? "unknown")").italic().font(.custom("tiny", size: 10))
+                            Image(uiImage : imageStore.getImage(url: quiz.author?.photo?.url))
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .clipShape(Circle())
+                        }
+                        Text("Current score: \(scoreModel.alreadyScored.count)")
+                        TextField("Your answer...",
+                                  text: $answer,
+                                  onCommit: {
+                                    scoreModel.check(answer: answer, quiz: quiz)
+                                    showAlert = true
+                                  })
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .shadow(radius: 10)
+                            .alert(isPresented: $showAlert, content: {
+                                Alert(title: Text("Result"), message: Text(scoreModel.isCorrect ? "Right" : "Wrong"), dismissButton: .default(Text("OK")))
+                            })
                         Button(action: { showAnswer = !showAnswer }, label: {
                             Text("Show solution")
                                 .fontWeight(.bold)
@@ -76,7 +107,6 @@ struct QuizDetail: View {
                         if (showAnswer){
                             Text("Answer: " + quiz.answer)
                         }
-                        
                         
                         Image(uiImage: imageStore.getImage(url: quiz.attachment?.url))
                             .resizable()

@@ -11,7 +11,6 @@ struct ContentView: View {
     
     /// Variable que instancia el modelo de datos en la View principal
     var model: QuizModel
-    @EnvironmentObject var score: ScoreModel
     
     var body: some View {
         
@@ -33,7 +32,7 @@ struct ContentView: View {
                     .clipped()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .shadow(radius: 20)
-
+                
                 Text("Selecciona una de las preguntas donde señala la flecha")
             }
         }
