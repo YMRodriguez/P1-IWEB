@@ -12,6 +12,7 @@ struct QuizDetail: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @EnvironmentObject var scoreModel: ScoreModel
     @EnvironmentObject var imageStore: ImageStore
+    @EnvironmentObject var quizModel: QuizModel
     
     @State var showAnswer: Bool = false
     @State var answer: String = ""
@@ -22,8 +23,17 @@ struct QuizDetail: View {
                 if horizontalSizeClass == .regular{
                     VStack{
                         HStack{
+                            HStack{
                             Text(quiz.question).font(.largeTitle)
-                            Spacer()
+                                Button(action: {
+                                    self.quizModel.toggleFavourite(quiz)
+                                }){
+                                    Image(quiz.favourite ? "yellow-star" : "black-star")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .scaledToFit()
+                            }
+                            }
                             Text("Author: \(quiz.author?.username ?? "unknown")").italic().font(.custom("tiny", size: 10))
                             Image(uiImage : imageStore.getImage(url: quiz.author?.photo?.url))
                                 .resizable()
@@ -125,7 +135,12 @@ struct QuizDetail: View {
 }
 
 struct QuizDetail_Previews: PreviewProvider {
+    static let quizModel: QuizModel = {
+        let qm = QuizModel()
+        qm.loadExamples()
+        return qm
+    }()
     static var previews: some View {
-        QuizDetail(quiz: QuizModel.shared.quizzes[0])
+        QuizDetail(quiz: quizModel.quizzes[0])
     }
 }

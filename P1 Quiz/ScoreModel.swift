@@ -11,8 +11,13 @@ class ScoreModel:  ObservableObject {
     
     @Published var isCorrect: Bool = false
     @Published var alreadyScored: Set<Int> = []
-    
-    let quizModel = QuizModel.shared
+    init(){
+        let us = UserDefaults.standard
+        if let acertadas = us.object(forKey: "acertadas") as? Array<Int>{
+            self.alreadyScored = Set(acertadas)
+        }
+    }
+
     
     func check(answer: String, quiz: QuizItem){
         let formattedAnswer = answer.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
@@ -22,6 +27,8 @@ class ScoreModel:  ObservableObject {
            !alreadyScored.contains(quiz.id) {
             alreadyScored.insert(quiz.id)
             isCorrect = true
+            let us = UserDefaults.standard
+            us.set( Array<Int>(alreadyScored), forKey: "acertadas")
         }else if formattedAnswer == formattedRightAnswer {
             isCorrect = true
         }else{

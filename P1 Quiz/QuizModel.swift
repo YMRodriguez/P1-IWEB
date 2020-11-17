@@ -16,17 +16,18 @@ struct QuizItem: Codable {
     let answer: String
     let author: Author?
     let attachment: Attachment?
-    let favourite: Bool
+    var favourite: Bool
     
     struct Author: Codable {
         let isAdmin: Bool?
-        let username: String
+        let username: String?
+        let profileName: String?
         let photo: Attachment?
     }
     
     struct Attachment: Codable {
-        let filename: String
-        let mime: String
+        let filename: String?
+        let mime: String?
         let url: URL?
     }
 }
@@ -34,37 +35,87 @@ struct QuizItem: Codable {
 /*
  Esta clase se encarga de procesar el JSON los quizzes, en este caso son siempre los mismos
  */
-class QuizModel {
-    /// Solución al constructor privado, patrón Singleton para crear la primera instancia. El static permite que todo el mundo comparta una única instancia de dicha clase
-    private(set) static var shared = QuizModel()
-    
+class QuizModel: ObservableObject {
     /// Extraidos del JSON, es fijo, si puedera modificarse en cualquier momento se va a querer la interfaz lo vigile, sería necesario un @Published
-    private(set) var quizzes = [QuizItem]()
+    @Published private(set) var quizzes = [QuizItem]()
     
     /// El constructor es privado ya que no se quiere que se puedan crear instancias desde otras clases
-    private init() {
-       load()
-    }
     
-    private func load() {
-        
-        guard let jsonURL = Bundle.main.url(forResource: "p1_quizzes", withExtension: "json") else {
-            print("Internal error: No encuentro p1_quizzes.json")
+    let session = URLSession.shared
+    let urlBase = "https://core.dit.upm.es"
+    let TOKEN = "683bf75fd3e6f3a4b1d8"
+    func load() {
+        let s = "\(urlBase)/api/quizzes/random10wa?token=\(TOKEN)"
+        guard let url = URL(string: s) else{
+            print("fallo en la URL")
             return
         }
-        
-        do {
-            let data = try Data(contentsOf: jsonURL)
+        let t = session.dataTask(with: url) { (data, res, error) in
+            if error != nil{
+                print("fallo")
+                return
+            }
+            if(res as! HTTPURLResponse).statusCode != 200{
+                print("fallo")
+                return
+            }
             let decoder = JSONDecoder()
             
             // let str = String(data: data, encoding: String.Encoding.utf8)
             // print("Quizzes ==>", str!)
             
-            let quizzes = try decoder.decode([QuizItem].self, from: data)
-            self.quizzes = quizzes
-        } catch {
-            print("Algo chungo ha pasado: \(error)")
+            if let quizzes = try? decoder.decode([QuizItem].self, from: data!){
+            DispatchQueue.main.async {
+                self.quizzes = quizzes
+                
+            }
+            }
         }
+        t.resume()
+    }
+    
+    func toogleFavorite(_ quizItem : QuizItem){
+        guard let index = quizzes.firstIndex(where:{$0.id == quizItem.id}) else{
+            print("fallo")
+            return
+        }
+        let surl = "\(urlBase)/api/users/tokenOwner/favorites/\(quizItem.id)?token=\(TOKEN)"
+        guard let url = URL(string: surl) else{
+            print("fallo")
+            return
+        }
+        var  request = URLRequest(url: url)
+        request.httpMethod = quizItem.favourite ? "DELETE" : "PUT"
+        request.addValue("XMLHttpRequest", forHTTPHeaderField: "X-Requested-With")
+        
+        let t = session.uploadTask(with: request, from: Data()){(data, res , error) in
+                
+                if error != nil{
+                    print("fallo")
+                    return
+                }
+                if(res as! HTTPURLResponse).statusCode != 200{
+                    print("fallo")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.quizzes[index].favourite.toggle()
+                }
+                
+        }
+            t.resume()
+    }
+    
+    func loadExamples(){
+        quizzes = [
+            QuizItem(id:1,
+            question: "fjeofbr",
+            answer:"cdjfbewu",
+            author: nil,
+            attachment: nil,
+            favourite: true
+            )
+        ]
     }
 }
 

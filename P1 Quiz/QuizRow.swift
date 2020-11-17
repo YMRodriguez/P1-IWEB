@@ -32,7 +32,12 @@ struct QuizRow: View {
 }
 
 struct QuizRow_Previews: PreviewProvider {
+    static let quizModel: QuizModel = {
+        let qm = QuizModel()
+        qm.loadExamples()
+        return qm
+    }()
     static var previews: some View {
-        QuizRow(quiz: QuizModel.shared.quizzes[0])
+        QuizRow(quiz: quizModel.quizzes[0])
     }
 }

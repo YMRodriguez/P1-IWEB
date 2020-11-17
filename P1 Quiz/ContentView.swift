@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
-    
-    /// Variable que instancia el modelo de datos en la View principal
-    var model: QuizModel
+    @EnvironmentObject var quizModel: QuizModel
+    @EnvironmentObject var scoreModel: ScoreModel
     
     var body: some View {
         
         NavigationView {
             List{
-                ForEach(model.quizzes, id: \.id){ quiz in
+                ForEach(quizModel.quizzes, id: \.id){ quiz in
                     
                     /// label: {QuizRow()} esto sería lo equivalente sin sacar la closure fuera, sin corchetes no funcionaria.
                     // MARK: duda
@@ -40,13 +39,15 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static let quizModel: QuizModel = {
+        let qm = QuizModel()
+        qm.loadExamples()
+        return qm
+    }()
     
     static var previews: some View {
         /// Necesito crear esta variable dentro porque las previews son Static
-        let model = QuizModel.shared
-        
-        Group {
-            ContentView(model: model)
-        }
+            ContentView()
+                .environmentObject(quizModel)
     }
 }
