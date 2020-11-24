@@ -17,7 +17,9 @@ class ScoreModel:  ObservableObject {
             self.alreadyScored = Set(acertadas)
         }
     }
-
+    func acertado(_ quiz: QuizItem) -> Bool{
+        alreadyScored.contains(quiz.id)
+    }
     
     func check(answer: String, quiz: QuizItem){
         let formattedAnswer = answer.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)

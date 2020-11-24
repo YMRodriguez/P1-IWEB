@@ -21,7 +21,7 @@ struct QuizRow: View {
             Text(quiz.question)
             Spacer()
             VStack{
-                Text(quiz.author?.username ?? "Author").italic().font(.custom("tiny", size: 10)).frame(width: 40, height: 2)
+                Text(quiz.author?.username ?? quiz.author?.profileName ?? "Anonimo").italic().font(.custom("tiny", size: 10)).frame(width: 40, height: 2)
                 Image(uiImage : imageStore.getImage(url: quiz.author?.photo?.url))
                     .resizable()
                     .frame(width: 30, height: 30)

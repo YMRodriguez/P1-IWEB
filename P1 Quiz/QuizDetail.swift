@@ -84,6 +84,16 @@ struct QuizDetail: View {
                     VStack{
                         Text(quiz.question).font(.largeTitle)
                         HStack{
+                            Button(action: {
+                                self.quizModel.toggleFavourite(quiz)
+                            }){
+                                Image(quiz.favourite ? "yellow-star" : "black-star")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .scaledToFit()
+                        }
+                        }
+                        HStack{
                             Text("Author: \(quiz.author?.username ?? "unknown")").italic().font(.custom("tiny", size: 10))
                             Image(uiImage : imageStore.getImage(url: quiz.author?.photo?.url))
                                 .resizable()

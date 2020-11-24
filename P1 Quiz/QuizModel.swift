@@ -21,6 +21,7 @@ struct QuizItem: Codable {
     struct Author: Codable {
         let isAdmin: Bool?
         let username: String?
+        let accountTypeId: Int?
         let profileName: String?
         let photo: Attachment?
     }
@@ -74,14 +75,14 @@ class QuizModel: ObservableObject {
         t.resume()
     }
     
-    func toogleFavorite(_ quizItem : QuizItem){
+    func toggleFavourite(_ quizItem : QuizItem){
         guard let index = quizzes.firstIndex(where:{$0.id == quizItem.id}) else{
-            print("fallo")
+            print("fallo2")
             return
         }
-        let surl = "\(urlBase)/api/users/tokenOwner/favorites/\(quizItem.id)?token=\(TOKEN)"
+        let surl = "\(urlBase)/api/users/tokenOwner/favourites/\(quizItem.id)?token=\(TOKEN)"
         guard let url = URL(string: surl) else{
-            print("fallo")
+            print("fallo1")
             return
         }
         var  request = URLRequest(url: url)
@@ -91,11 +92,11 @@ class QuizModel: ObservableObject {
         let t = session.uploadTask(with: request, from: Data()){(data, res , error) in
                 
                 if error != nil{
-                    print("fallo")
+                    print("fallo3")
                     return
                 }
                 if(res as! HTTPURLResponse).statusCode != 200{
-                    print("fallo")
+                    print((res as! HTTPURLResponse).statusCode)
                     return
                 }
                 DispatchQueue.main.async {

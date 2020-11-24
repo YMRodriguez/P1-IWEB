@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var showAll: Bool = true
     @EnvironmentObject var quizModel: QuizModel
     @EnvironmentObject var scoreModel: ScoreModel
     
@@ -15,11 +16,16 @@ struct ContentView: View {
         
         NavigationView {
             List{
+                Toggle(isOn: $showAll){
+                    Label("ver todo", systemImage: "list.bullet")
+                }
                 ForEach(quizModel.quizzes, id: \.id){ quiz in
-                    
+                    if showAll || !scoreModel.acertado(quiz){
+                        NavigationLink( destination: QuizDetail(quiz:quiz)){ QuizRow(quiz: quiz)}
+                    }
                     /// label: {QuizRow()} esto sería lo equivalente sin sacar la closure fuera, sin corchetes no funcionaria.
                     // MARK: duda
-                    NavigationLink( destination: QuizDetail(quiz:quiz)){ QuizRow(quiz: quiz)}
+                    
                 }
             }
             .navigationTitle("P1 Quiz")
