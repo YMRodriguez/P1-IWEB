@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct QuizDetail: View {
-    var quiz: QuizItem
+    @Binding var quiz: QuizItem
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @EnvironmentObject var scoreModel: ScoreModel
     @EnvironmentObject var imageStore: ImageStore
+    @EnvironmentObject var quizModel: QuizModel
+
     
     @State var showAnswer: Bool = false
     @State var answer: String = ""
     @State var showAlert: Bool = false
+    
     var body: some View {
         VStack{
             Group{
@@ -43,7 +46,17 @@ struct QuizDetail: View {
                                 Alert(title: Text("Result"), message: Text(scoreModel.isCorrect ? "Right" : "Wrong"), dismissButton: .default(Text("OK")))
                             })
                         HStack{
-                            Text("Current score: \(scoreModel.alreadyScored.count)")
+                            VStack{
+                                Text("Current score: \(scoreModel.alreadyScored.count)")
+                                Button(action: {
+                                    self.quizModel.toggleFavourite(quiz)
+                                }){
+                                    Image(quiz.favourite ? "yellow-star":"blank-star")
+                                        .resizable()
+                                        .frame(width: 30, height: 30)
+                                        .scaledToFit()
+                                }
+                            }
                             Button(action: { showAnswer = !showAnswer }, label: {
                                 Text("Show solution")
                                     .fontWeight(.bold)
@@ -79,6 +92,14 @@ struct QuizDetail: View {
                                 .resizable()
                                 .frame(width: 30, height: 30)
                                 .clipShape(Circle())
+                            Button(action: {
+                                self.quizModel.toggleFavourite(quiz)
+                            }){
+                                Image(quiz.favourite ? "yellow-star":"blank-star")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .scaledToFit()
+                            }
                         }
                         Text("Current score: \(scoreModel.alreadyScored.count)")
                         TextField("Your answer...",
@@ -125,7 +146,13 @@ struct QuizDetail: View {
 }
 
 struct QuizDetail_Previews: PreviewProvider {
+    static let quizModel: QuizModel = {
+        let quizModel = QuizModel()
+        quizModel.loadExamples()
+        return quizModel
+    }()
     static var previews: some View {
-        QuizDetail(quiz: QuizModel.shared.quizzes[0])
+        EmptyView()
+        //QuizDetail(quiz: quizModel.quizzes[0])
     }
 }

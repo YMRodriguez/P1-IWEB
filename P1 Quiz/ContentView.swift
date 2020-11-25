@@ -9,21 +9,30 @@ import SwiftUI
 
 struct ContentView: View {
     
-    /// Variable que instancia el modelo de datos en la View principal
-    var model: QuizModel
+    @EnvironmentObject var quizModel: QuizModel
+    @EnvironmentObject var scoreModel: ScoreModel
+    
+    @State var showAll: Bool = true
     
     var body: some View {
         
         NavigationView {
             List{
-                ForEach(model.quizzes, id: \.id){ quiz in
-                    
-                    /// label: {QuizRow()} esto sería lo equivalente sin sacar la closure fuera, sin corchetes no funcionaria.
-                    // MARK: duda
-                    NavigationLink( destination: QuizDetail(quiz:quiz)){ QuizRow(quiz: quiz)}
+                Toggle(isOn: $showAll){
+                    Label( "Ver todo" , systemImage: "list.bullet")
+                }
+                
+                ForEach(quizModel.quizzes.indices, id: \.self){ i in
+                    if showAll || !scoreModel.correct(quizModel.quizzes[i]){
+                        /// label: {QuizRow()} esto sería lo equivalente sin sacar la closure fuera, sin corchetes no funcionaria.
+                        NavigationLink( destination: QuizDetail(quiz: $quizModel.quizzes[i])){ QuizRow(quiz: $quizModel.quizzes[i])}
+                        
+                    }
                 }
             }
             .navigationTitle("P1 Quiz")
+            .navigationBarItems(trailing: Button(action: {quizModel.load()},
+                                                 label: { Image(systemName: "arrow.clockwise")}))
             
             HStack{
                 Image("UpLeft")
@@ -41,12 +50,14 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     
+    static let quizModel: QuizModel = {
+        let quizModel = QuizModel()
+        quizModel.loadExamples()
+        return quizModel
+    }()
+    
     static var previews: some View {
-        /// Necesito crear esta variable dentro porque las previews son Static
-        let model = QuizModel.shared
-        
-        Group {
-            ContentView(model: model)
-        }
+        ContentView()
+            .environmentObject(quizModel)
     }
 }

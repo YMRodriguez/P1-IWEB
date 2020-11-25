@@ -9,8 +9,10 @@ import SwiftUI
 
 struct QuizRow: View {
     @EnvironmentObject var imageStore: ImageStore
-    
-    var quiz: QuizItem
+    @EnvironmentObject var quizModel: QuizModel
+
+
+    @Binding var quiz: QuizItem
     var body: some View {
         HStack{
             Image(uiImage : imageStore.getImage(url: quiz.attachment?.url))
@@ -20,8 +22,17 @@ struct QuizRow: View {
                 .shadow(radius: 5)
             Text(quiz.question)
             Spacer()
+            Button(action: {
+                self.quizModel.toggleFavourite(quiz)
+            }){
+                Image(quiz.favourite ? "yellow-star":"blank-star")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .scaledToFit()
+            }
+            Spacer()
             VStack{
-                Text(quiz.author?.username ?? "Author").italic().font(.custom("tiny", size: 10)).frame(width: 40, height: 2)
+                Text(quiz.author?.username ?? quiz.author?.profileName ?? "Author").italic().font(.custom("tiny", size: 10)).frame(width: 40, height: 2)
                 Image(uiImage : imageStore.getImage(url: quiz.author?.photo?.url))
                     .resizable()
                     .frame(width: 30, height: 30)
@@ -32,7 +43,15 @@ struct QuizRow: View {
 }
 
 struct QuizRow_Previews: PreviewProvider {
+    
+    static let quizModel: QuizModel = {
+        let quizModel = QuizModel()
+        quizModel.loadExamples()
+        return quizModel
+    }()
+    
     static var previews: some View {
-        QuizRow(quiz: QuizModel.shared.quizzes[0])
+        EmptyView()
+        //QuizRow(quiz: quizModel.quizzes[0])
     }
 }
